@@ -15,17 +15,19 @@ const InputForm = ({
   isFormValid
 }) => {
   return (
-    <div className="bg-gray-900 border border-gray-800 rounded-lg p-6 md:p-8 mb-8">
-      <h2 className="text-2xl font-bold text-cyan-400 mb-6 flex items-center gap-2">
-        <BarChart3 className="w-6 h-6" />
-        INPUT PARAMETERS
-        {uploadedFile && (
-          <span className="ml-auto text-xs bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 px-3 py-1 rounded-full flex items-center gap-1">
-            <CheckCircle2 className="w-3 h-3" />
-            Document Uploaded
-          </span>
-        )}
+    <div className="bg-gray-800 border border-gray-700 rounded-lg p-8 mb-12 shadow-sm">
+      <h2 className="text-3xl font-bold text-gray-100 mb-2 flex items-center gap-3">
+        <BarChart3 className="w-8 h-8 text-gray-200" />
+        Scenario Planning Tool
       </h2>
+      <p className="text-gray-300 mb-6">Analyze potential outcomes for your product decision</p>
+
+      {uploadedFile && (
+        <span className="inline-flex text-xs bg-gray-700 text-gray-100 border border-gray-600 px-3 py-1 rounded-full items-center gap-2 mb-6">
+          <CheckCircle2 className="w-3 h-3 text-gray-100" />
+          Document Uploaded
+        </span>
+      )}
 
       <div className="space-y-6">
         {/* File Upload */}
@@ -38,41 +40,41 @@ const InputForm = ({
 
         {/* Critical Decision */}
         <div>
-          <label className="block text-sm font-semibold text-gray-400 mb-2">
-            CRITICAL DECISION *
+            <label className="block text-sm font-semibold text-gray-100 mb-2">
+            What is your critical decision or challenge? *
           </label>
-          <input
+            <input
             type="text"
             value={formData.decision}
             onChange={(e) => onFieldUpdate('decision', e.target.value)}
             placeholder="e.g., Should we launch premium tier now or wait 6 months?"
-            className="w-full bg-black border border-gray-700 rounded px-4 py-3 text-gray-100 placeholder-gray-600 focus:outline-none focus:border-cyan-500 transition-colors"
+              className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 text-gray-100 placeholder-gray-400 focus:outline-none focus:border-gray-500 focus:ring-2 focus:ring-gray-700 transition-colors"
           />
         </div>
 
         {/* Product Type, Industry, Timeframe */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
-            <label className="block text-sm font-semibold text-gray-400 mb-2">
-              PRODUCT TYPE {!uploadedFile && '*'}
+              <label className="block text-sm font-semibold text-gray-100 mb-2">
+              What are you building or deciding about? {!uploadedFile && '*'}
             </label>
             <input
               type="text"
               value={formData.productType}
               onChange={(e) => onFieldUpdate('productType', e.target.value)}
-              placeholder={uploadedFile ? "Auto-detected from file" : "e.g., Mobile banking app"}
-              className="w-full bg-black border border-gray-700 rounded px-4 py-3 text-gray-100 placeholder-gray-600 focus:outline-none focus:border-cyan-500 transition-colors"
+              placeholder={uploadedFile ? "Auto-detected from file" : "e.g., Premium subscription model"}
+                className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 text-gray-100 placeholder-gray-400 focus:outline-none focus:border-gray-500 focus:ring-2 focus:ring-gray-700 transition-colors"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-semibold text-gray-400 mb-2">
-              INDUSTRY *
+              <label className="block text-sm font-semibold text-gray-100 mb-2">
+              Industry *
             </label>
             <select
               value={formData.industry}
               onChange={(e) => onFieldUpdate('industry', e.target.value)}
-              className="w-full bg-black border border-gray-700 rounded px-4 py-3 text-gray-100 focus:outline-none focus:border-cyan-500 transition-colors"
+                className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 text-gray-100 focus:outline-none focus:border-gray-500 focus:ring-2 focus:ring-gray-700 transition-colors"
             >
               <option value="">Select industry...</option>
               {INDUSTRIES.map(ind => (
@@ -82,13 +84,13 @@ const InputForm = ({
           </div>
 
           <div>
-            <label className="block text-sm font-semibold text-gray-400 mb-2">
-              TIMEFRAME *
+              <label className="block text-sm font-semibold text-gray-100 mb-2">
+              Timeframe *
             </label>
             <select
               value={formData.timeframe}
               onChange={(e) => onFieldUpdate('timeframe', e.target.value)}
-              className="w-full bg-black border border-gray-700 rounded px-4 py-3 text-gray-100 focus:outline-none focus:border-cyan-500 transition-colors"
+                className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 text-gray-100 focus:outline-none focus:border-gray-500 focus:ring-2 focus:ring-gray-700 transition-colors"
             >
               <option value="">Select timeframe...</option>
               {TIMEFRAMES.map(tf => (
@@ -101,15 +103,15 @@ const InputForm = ({
         {/* Custom Industry Input */}
         {formData.industry === 'custom' && (
           <div>
-            <label className="block text-sm font-semibold text-gray-400 mb-2">
-              CUSTOM INDUSTRY *
+              <label className="block text-sm font-semibold text-gray-100 mb-2">
+              Custom Industry *
             </label>
             <input
               type="text"
               value={formData.customIndustry}
               onChange={(e) => onFieldUpdate('customIndustry', e.target.value)}
               placeholder="e.g., Healthcare, E-commerce, SaaS..."
-              className="w-full bg-black border border-gray-700 rounded px-4 py-3 text-gray-100 placeholder-gray-600 focus:outline-none focus:border-cyan-500 transition-colors"
+                className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 text-gray-100 placeholder-gray-400 focus:outline-none focus:border-gray-500 focus:ring-2 focus:ring-gray-700 transition-colors"
             />
           </div>
         )}
@@ -117,8 +119,8 @@ const InputForm = ({
         {/* Custom Timeframe Input */}
         {formData.timeframe === 'custom' && (
           <div>
-            <label className="block text-sm font-semibold text-gray-400 mb-2">
-              CUSTOM TIMEFRAME (MONTHS) *
+              <label className="block text-sm font-semibold text-gray-100 mb-2">
+              Custom Timeframe (Months) *
             </label>
             <input
               type="number"
@@ -127,22 +129,22 @@ const InputForm = ({
               value={formData.customTimeframe}
               onChange={(e) => onFieldUpdate('customTimeframe', e.target.value)}
               placeholder={`Enter number of months (1-${MAX_TIMEFRAME_MONTHS})`}
-              className="w-full bg-black border border-gray-700 rounded px-4 py-3 text-gray-100 placeholder-gray-600 focus:outline-none focus:border-cyan-500 transition-colors"
+                className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 text-gray-100 placeholder-gray-400 focus:outline-none focus:border-gray-500 focus:ring-2 focus:ring-gray-700 transition-colors"
             />
           </div>
         )}
 
         {/* Additional Context */}
         <div>
-          <label className="block text-sm font-semibold text-gray-400 mb-2">
-            ADDITIONAL CONTEXT
+            <label className="block text-sm font-semibold text-gray-100 mb-2">
+            Additional Context (Optional)
           </label>
           <textarea
             value={formData.context}
             onChange={(e) => onFieldUpdate('context', e.target.value)}
             placeholder="Team size, budget constraints, competitive landscape, regulatory concerns..."
             rows="4"
-            className="w-full bg-black border border-gray-700 rounded px-4 py-3 text-gray-100 placeholder-gray-600 focus:outline-none focus:border-cyan-500 transition-colors resize-none"
+              className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 text-gray-100 placeholder-gray-400 focus:outline-none focus:border-gray-500 focus:ring-2 focus:ring-gray-700 transition-colors resize-none"
           />
         </div>
 
@@ -150,17 +152,17 @@ const InputForm = ({
         <button
           onClick={onSubmit}
           disabled={loading || !isFormValid}
-          className="w-full bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 disabled:from-gray-700 disabled:to-gray-700 disabled:cursor-not-allowed text-white font-bold py-4 px-6 rounded transition-all duration-300 flex items-center justify-center gap-2 text-lg"
+          className="w-full bg-gray-700 hover:bg-gray-600 disabled:bg-gray-500 disabled:cursor-not-allowed text-white font-bold py-4 px-6 rounded-lg transition-all duration-300 flex items-center justify-center gap-2 text-lg"
         >
           {loading ? (
             <>
               <Loader2 className="w-6 h-6 animate-spin" />
-              SIMULATING FUTURES...
+              Analyzing scenarios...
             </>
           ) : (
             <>
               <Sparkles className="w-6 h-6" />
-              GENERATE MULTIVERSE SCENARIOS
+              Generate Scenario Analysis
             </>
           )}
         </button>

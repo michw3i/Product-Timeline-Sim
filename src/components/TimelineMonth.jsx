@@ -3,7 +3,7 @@ import { CheckCircle2, AlertTriangle, XCircle } from 'lucide-react';
 import MetricsCard from './MetricsCard';
 import { REGULATORY_COLORS } from '../constants';
 
-const TimelineMonth = ({ month, isLast }) => {
+const TimelineMonth = ({ month }) => {
   const getRegulatoryIcon = (status) => {
     switch(status) {
       case 'green': return <CheckCircle2 className="w-4 h-4" />;
@@ -14,22 +14,16 @@ const TimelineMonth = ({ month, isLast }) => {
   };
 
   return (
-    <div className="relative">
-      {/* Connection Line */}
-      {!isLast && (
-        <div className="absolute left-6 top-12 bottom-0 w-0.5 bg-gradient-to-b from-cyan-500 to-transparent"></div>
-      )}
-
-      <div className="flex gap-4">
-        {/* Month Badge */}
-        <div className="flex-shrink-0">
+    <div className="min-w-[300px] flex-shrink-0">
+      <div className="flex flex-col gap-3">
+        <div className="flex items-center gap-4">
           <div className="w-12 h-12 rounded-full bg-gradient-to-br from-cyan-600 to-blue-600 flex items-center justify-center font-bold text-lg border-4 border-black">
             M{month.month}
           </div>
+          <div className="text-sm font-semibold text-gray-400">Month {month.month}</div>
         </div>
 
-        {/* Content */}
-        <div className="flex-1 bg-black border border-gray-800 rounded-lg p-4 hover:border-gray-700 transition-colors">
+        <div className="bg-black border border-gray-800 rounded-lg p-4 hover:border-gray-700 transition-colors">
           {/* Events */}
           <div className="mb-4">
             <h4 className="text-sm font-semibold text-gray-400 mb-2">KEY EVENTS</h4>
@@ -52,7 +46,7 @@ const TimelineMonth = ({ month, isLast }) => {
           </div>
 
           {/* Risks & Regulatory */}
-          <div className="flex flex-col md:flex-row gap-3">
+          <div className="flex flex-col gap-3">
             <div className="flex-1">
               <h4 className="text-xs font-semibold text-gray-400 mb-2">RISKS</h4>
               <div className="flex flex-wrap gap-2">

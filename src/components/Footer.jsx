@@ -2,8 +2,10 @@ import React from 'react';
 
 const Footer = () => {
   return (
-    <div className="max-w-7xl mx-auto mt-12 pt-8 border-t border-gray-800 text-center text-gray-500 text-sm">
-      <p>Built for PNC Prize Track • Powered by Claude AI</p>
+    <div className="w-full border-t border-gray-800 mt-12 py-8 bg-gray-900">
+      <div className="max-w-6xl mx-auto px-4 md:px-8 text-center text-gray-300 text-sm">
+        <p>AI-Powered Scenario Planning Tool for Product Managers</p>
+      </div>
     </div>
   );
 };

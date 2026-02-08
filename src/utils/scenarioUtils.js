@@ -10,6 +10,18 @@ export const generateMockScenarios = (timeframe) => {
       description: "Market conditions align perfectly, early adoption exceeds expectations",
       outcome: "Dominant market position established with strong regulatory compliance",
       probability: "25%",
+      reasoning: "Aggressive early investment plus viral growth drives outsized adoption and market momentum.",
+      brainstorming: [
+        "Prioritize viral onboarding loops to accelerate early adoption",
+        "Partner with two enterprise customers for credibility",
+        "Introduce premium features after product-market fit"
+      ],
+      marketSizing: "TAM estimated at $2.4B with a reachable SAM of $480M in the first 24 months",
+      customerNeeds: [
+        "Simple onboarding and low-friction payments",
+        "Robust data-export and reporting",
+        "Dedicated onboarding support for enterprise customers"
+      ],
       timeline: Array.from({ length: timeframe }, (_, i) => ({
         month: i + 1,
         events: [
@@ -31,6 +43,18 @@ export const generateMockScenarios = (timeframe) => {
       description: "Steady growth with expected challenges and competitive pressure",
       outcome: "Stable market position with moderate growth trajectory",
       probability: "50%",
+      reasoning: "Measured investment and iterative learning lead to stable growth while managing risk.",
+      brainstorming: [
+        "Focus on retention: build lightweight referral incentives",
+        "Invest in analytics to identify high-value cohorts",
+        "Run localized pilots in 2 regions before full roll-out"
+      ],
+      marketSizing: "TAM ~$1.8B with initial SAM of $300M for target segments",
+      customerNeeds: [
+        "Clear pricing tiers",
+        "Reliable performance at scale",
+        "Transparent privacy and compliance controls"
+      ],
       timeline: Array.from({ length: timeframe }, (_, i) => ({
         month: i + 1,
         events: [
@@ -52,6 +76,18 @@ export const generateMockScenarios = (timeframe) => {
       description: "Unexpected headwinds, regulatory scrutiny, and market resistance",
       outcome: "Pivot required or strategic retreat from initial vision",
       probability: "25%",
+      reasoning: "Regulatory and market headwinds limit options, forcing conservative actions or pivots.",
+      brainstorming: [
+        "Explore narrower niche positioning to reduce regulatory exposure",
+        "Delay large marketing spends until compliance risks are mitigated",
+        "Consider partnerships to share compliance burden with established players"
+      ],
+      marketSizing: "Constrained near-term TAM due to regulation; runway-focused SAM of $80M",
+      customerNeeds: [
+        "Explicit compliance guarantees",
+        "Low-risk deployment options",
+        "Clear escalation paths for support"
+      ],
       timeline: Array.from({ length: timeframe }, (_, i) => ({
         month: i + 1,
         events: [
@@ -90,6 +126,7 @@ ${scenario.description}
 
 OUTCOME: ${scenario.outcome}
 
+${scenario.brainstorming ? 'BRAINSTORMING:\n- ' + scenario.brainstorming.join('\n- ') + '\n\n' : ''}${scenario.marketSizing ? 'MARKET SIZING:\n' + scenario.marketSizing + '\n\n' : ''}${scenario.customerNeeds ? 'CUSTOMER NEEDS:\n- ' + scenario.customerNeeds.join('\n- ') + '\n\n' : ''}
 TIMELINE:
 ${scenario.timeline.map(m => `
 Month ${m.month}:
