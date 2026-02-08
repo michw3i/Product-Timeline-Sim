@@ -233,7 +233,7 @@ app.post('/api/generate', async (req, res) => {
     // Convert from Anthropic format (content array) to OpenAI format (string content)
     const groqPayload = {
       model: payload.model,
-      max_tokens: payload.max_tokens,
+      max_tokens: 4096,
       messages: payload.messages.map(msg => ({
         role: msg.role,
         // If content is array (Anthropic format), extract text; otherwise use as-is

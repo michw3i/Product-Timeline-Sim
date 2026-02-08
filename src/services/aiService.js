@@ -205,14 +205,65 @@ const getApiUrl = () => {
  * @returns {Array|null} Scenarios array or null
  */
 const parseAIResponse = (data) => {
-  const content = data.content.find(c => c.type === 'text')?.text || '';
-  
-  // Extract JSON from response
-  const jsonMatch = content.match(/\{[\s\S]*\}/);
-  if (jsonMatch) {
+  try {
+    // Handle both direct text and content array format
+    let content = '';
+    
+    if (typeof data === 'string') {
+      content = data;
+    } else if (data.content && Array.isArray(data.content)) {
+      const textContent = data.content.find(c => c.type === 'text' || c.text);
+      content = textContent?.text || textContent || '';
+    } else if (data.text) {
+      content = data.text;
+    }
+    
+    if (!content) {
+      console.error('No text content found in API response. Response structure:', JSON.stringify(data).substring(0, 500));
+      return null;
+    }
+
+    console.log('[parseAIResponse] Content preview:', content.substring(0, 200));
+
+    // Extract JSON from response - be more aggressive with extraction
+    // Look for JSON object that contains "scenarios"
+    let jsonMatch = null;
+    
+    // Try to find the last JSON object (most likely to be complete)
+    const allMatches = content.match(/\{[\s\S]*?\}/g);
+    if (allMatches && allMatches.length > 0) {
+      // Find the largest object that contains "scenarios"
+      jsonMatch = allMatches.reverse().find(match => match.includes('"scenarios"'));
+    }
+    
+    if (!jsonMatch) {
+      // Fallback: try last complete object
+      jsonMatch = content.match(/\{[\s\S]*\}$/);
+    }
+    
+    if (!jsonMatch) {
+      // Last resort: find largest JSON object
+      jsonMatch = content.match(/\{[\s\S]*\}/);
+    }
+    
+    if (!jsonMatch) {
+      console.error('No JSON found in response. Content preview:', content.substring(0, 500));
+      return null;
+    }
+
+    console.log('[parseAIResponse] Attempting to parse JSON of length:', jsonMatch.length);
+
     try {
-      const parsed = JSON.parse(jsonMatch[0]);
+      const parsed = JSON.parse(jsonMatch);
       const scenarios = parsed.scenarios || [];
+      
+      if (!Array.isArray(scenarios) || scenarios.length === 0) {
+        console.error('No scenarios array in parsed response or empty array. Parsed keys:', Object.keys(parsed));
+        return null;
+      }
+
+      console.log('[parseAIResponse] Found', scenarios.length, 'scenarios');
+
       const recommendation = parsed.recommendation || null;
 
       // Normalize scenarios to ensure fields exist and annotate recommendation
@@ -238,14 +289,18 @@ const parseAIResponse = (data) => {
         }
       }
 
+      console.log('[parseAIResponse] Successfully parsed scenarios');
       return normalized;
-    } catch (err) {
-      console.error('Failed to parse JSON from AI response', err);
+    } catch (jsonErr) {
+      console.error('Failed to parse JSON from extracted content:', jsonErr.message);
+      console.error('Attempted JSON length:', jsonMatch.length);
+      console.error('Attempted JSON preview:', jsonMatch.substring(0, 500));
       return null;
     }
+  } catch (err) {
+    console.error('Error in parseAIResponse:', err);
+    return null;
   }
-
-  return null;
 };
 
 /**
@@ -293,6 +348,7 @@ export const generateScenarios = async (params) => {
     // API key is handled by the proxy server for security,
     // so we don't include it in the client-side request
 
+    console.log('[generateScenarios] Sending request to:', target);
     response = await fetch(target, init);
   } catch (err) {
     // Network-level error (DNS, connection, CORS, etc.)
@@ -306,18 +362,26 @@ export const generateScenarios = async (params) => {
     let bodyText = '';
     try { bodyText = await response.text(); } catch (_) {}
     
+    console.error('[generateScenarios] API Error Response:', {
+      status: response.status,
+      statusText: response.statusText,
+      body: bodyText
+    });
+    
     if (response.status === 401 || response.status === 403) {
       throw new Error(`API authentication failed. Please check your GROQ_API_KEY in the server environment.`);
     }
     
-    throw new Error(`API request failed: ${response.status} ${response.statusText} ${bodyText}`);
+    throw new Error(`API request failed: ${response.status} ${response.statusText}\n\n${bodyText}`);
   }
 
   const data = await response.json();
+  console.log('[generateScenarios] Received API response');
   const scenarios = parseAIResponse(data);
 
   if (!scenarios) {
-    throw new Error('Failed to parse scenarios from AI response');
+    console.error('Failed to parse scenarios. API response data:', JSON.stringify(data).substring(0, 2000));
+    throw new Error('Failed to parse scenarios from AI response. Check browser console for details. The AI may not have returned properly formatted scenario data.');
   }
 
   return scenarios;

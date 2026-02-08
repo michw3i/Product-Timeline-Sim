@@ -1,9 +1,11 @@
-import React from 'react';
-import { ArrowRight, Download } from 'lucide-react';
+import React, { useState } from 'react';
+import { ArrowRight, Download, ChevronDown, ChevronUp } from 'lucide-react';
 import SimplifiedTimeline from './SimplifiedTimeline';
 import { exportScenarioToText, downloadTextFile } from '../utils/scenarioUtils';
 
 const Timeline = ({ scenario, formData }) => {
+  const [expandedInsight, setExpandedInsight] = useState(false);
+
   const handleExport = () => {
     const content = exportScenarioToText(scenario, formData);
     const filename = `scenario-${scenario.name.toLowerCase().replace(/\s+/g, '-')}.txt`;
@@ -47,8 +49,28 @@ const Timeline = ({ scenario, formData }) => {
         )}
         {scenario.reasoning && (
           <div className="bg-gray-800 border border-gray-700 rounded-lg p-4">
-            <p className="text-xs font-semibold text-gray-300 mb-1">KEY INSIGHT</p>
-            <p className="text-sm text-gray-200 line-clamp-3">{scenario.reasoning}</p>
+            <p className="text-xs font-semibold text-gray-300 mb-2">KEY INSIGHT</p>
+            <div className={`text-sm text-gray-200 ${!expandedInsight ? 'line-clamp-3' : ''}`}>
+              {scenario.reasoning}
+            </div>
+            {scenario.reasoning.length > 150 && (
+              <button
+                onClick={() => setExpandedInsight(!expandedInsight)}
+                className="mt-2 flex items-center gap-1 text-xs text-gray-400 hover:text-gray-200 transition-colors"
+              >
+                {expandedInsight ? (
+                  <>
+                    <ChevronUp className="w-4 h-4" />
+                    Show less
+                  </>
+                ) : (
+                  <>
+                    <ChevronDown className="w-4 h-4" />
+                    Read more
+                  </>
+                )}
+              </button>
+            )}
           </div>
         )}
       </div>
